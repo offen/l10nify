@@ -1,5 +1,10 @@
 # Changes
 
+## 0.1.1
+
+- [`b41f682`](https://github.com/offen/l10nify/commit/b41f68265e9dd8364314b378422a04a964e2cbdd)
+  fix command location, add npmignore
+
 ## 0.1.0
 
 - [`b2cef0a`](https://github.com/offen/l10nify/commit/b2cef0a825c6c8f7b9beb19438f61c83521f5e76)
