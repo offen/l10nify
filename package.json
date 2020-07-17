@@ -5,13 +5,13 @@
   "main": "index.js",
   "scripts": {
     "pretest": "standard",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "tape test/test.js",
     "preversion": "npm test",
     "version": "changes --commits",
     "postversion": "git push --follow-tags && npm publish --access public"
   },
   "bin": {
-    "extract-strings": "./bin/cli.js"
+    "extract-strings": "bin/cli.js"
   },
   "repository": {
     "type": "git",
@@ -30,8 +30,10 @@
   "homepage": "https://github.com/offen/l10nify#readme",
   "devDependencies": {
     "@studio/changes": "^2.0.1",
+    "browserify": "^16.5.1",
     "standard": "^14.3.4",
-    "tape": "^5.0.1"
+    "tape": "^5.0.1",
+    "vm": "^0.1.0"
   },
   "dependencies": {
     "arg": "^4.1.3",

@@ -2,7 +2,7 @@
 
 Localization workflow for Browserify
 
-## How does this work
+## How does this work?
 
 This is a Browserify-based workflow for localizing client side applications. It is built for use cases where you can and want to ship one bundle per locale. Strings are defined by calling a pseudo-global function (i.e. `__(string, args..)`) in the default language in your code (similar to GNU gettext or similar). Strings are stored in `.po` files.
 

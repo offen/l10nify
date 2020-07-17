@@ -1,0 +1,6 @@
+msgid ""
+msgstr ""
+
+# test/log.js:1
+msgid "Happy birthday %s!"
+msgstr "Alles Gute, %s!"

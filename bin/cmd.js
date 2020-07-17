@@ -15,16 +15,18 @@ var args = arg({
   '--default-locale': String,
   '--locale': [String],
   '--target': String,
-  '--match': String,
   '-h': '--help',
   '-d': '--default-locale',
   '-l': '--locale',
-  '-t': '--target',
-  '-m': '--match'
+  '-t': '--target'
 })
 
 if (args['--help']) {
-  console.log(`Usage: extract-strings [options]
+  console.log(`Usage: extract-strings [options] glob-pattern
+
+glob-pattern defines in which files to look for strings. Usually this will
+be "**/*.js" or similar.
+
 Options:
   -l, --locale [LOCALE]         Specify the locales to extract. Pass multiple
                                 locales by passing multiple flags.
@@ -32,8 +34,6 @@ Options:
                                 Defaults to "en".
   -t, --target [DIRECTORY]      Specify the target directory for saving .po
                                 files. Defaults to "./locales".
-  -m, --match [DIRECTORY]       Specify a glob pattern for files to extract
-                                strings from. Defaults to "**/*.js".
   -g, --global [IDENTIFIER]     Specify the global identifier used as l10n
                                 function in code, Defaults to "__"
   -h, --help                    Display this help message.
@@ -45,7 +45,6 @@ args = Object.assign({
   '--default-locale': 'en',
   '--locale': [],
   '--target': './locales/',
-  '--match': '**/*.js',
   '--global': '__'
 }, args)
 
@@ -63,7 +62,7 @@ if (eligible.length === 0) {
 Promise.all(eligible.map(function (locale) {
   return extractStrings(
     path.join(process.cwd(), args['--target'], locale + '.po'),
-    args['--match'],
+    args._[0],
     args['--global']
   )
 }))
