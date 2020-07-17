@@ -1,5 +1,10 @@
 # Changes
 
+## 0.1.2
+
+- [`14d1fc5`](https://github.com/offen/l10nify/commit/14d1fc5b2ab9268c2aecd5c57d152ae9296e3a62)
+  expand file patterns in shell
+
 ## 0.1.1
 
 - [`b41f682`](https://github.com/offen/l10nify/commit/b41f68265e9dd8364314b378422a04a964e2cbdd)
