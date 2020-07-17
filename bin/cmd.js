@@ -15,17 +15,19 @@ var args = arg({
   '--default-locale': String,
   '--locale': [String],
   '--target': String,
+  '--global': String,
   '-h': '--help',
   '-d': '--default-locale',
   '-l': '--locale',
-  '-t': '--target'
+  '-t': '--target',
+  '-g': '--global'
 })
 
 if (args['--help']) {
-  console.log(`Usage: extract-strings [options] glob-pattern
+  console.log(`Usage: extract-strings [options] files...
 
-glob-pattern defines in which files to look for strings. Usually this will
-be "**/*.js" or similar.
+files defines the files to extract strings from. Usually this will
+be a glob pattern like "**/*.js" or similar.
 
 Options:
   -l, --locale [LOCALE]         Specify the locales to extract. Pass multiple

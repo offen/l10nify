@@ -6,26 +6,22 @@
 var fs = require('fs')
 var util = require('util')
 var jscodeshift = require('jscodeshift')
-var glob = require('glob')
 var touch = require('touch')
 var PO = require('pofile')
 
 module.exports = extractStrings
 
-function extractStrings (destination, globPattern, globalFunctionIdentifier) {
-  return util.promisify(glob)(globPattern)
-    .then(function (files) {
-      if (!files || !files.length) {
-        console.log('No files found using given pattern %s, exiting', globPattern)
-        return null
-      }
-      return parse(files, globalFunctionIdentifier)
-    })
+function extractStrings (destination, files, globalFunctionIdentifier) {
+  if (!files || !files.length) {
+    console.log('No files found using given pattern, exiting')
+    return null
+  }
+  return parse(files, globalFunctionIdentifier)
     .then(function (allStrings) {
       return merge(destination, allStrings)
     })
     .then(function () {
-      console.log('Successfully saved strings to %j', destination)
+      console.log('Successfully saved strings to %s', destination)
     })
 }
 
