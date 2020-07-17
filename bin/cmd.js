@@ -64,7 +64,7 @@ if (eligible.length === 0) {
 Promise.all(eligible.map(function (locale) {
   return extractStrings(
     path.join(process.cwd(), args['--target'], locale + '.po'),
-    args._[0],
+    args._,
     args['--global']
   )
 }))
