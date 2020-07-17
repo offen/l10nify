@@ -11,7 +11,7 @@
     "postversion": "git push --follow-tags && npm publish --access public"
   },
   "bin": {
-    "extract-strings": "bin/cli.js"
+    "extract-strings": "bin/cmd.js"
   },
   "repository": {
     "type": "git",
