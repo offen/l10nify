@@ -38,16 +38,16 @@ const HappyBirthdayComponent = (props) => {
 Next, you can extract these strings from your code into `.po` files using the `extract-strings` command:
 
 ```
-$(npm bin)/extract-strings --default-locale en \
-  --locale es \
-  --locale fr \
-  --locale de \
-  **/*.js 
+$(npm bin)/extract-strings **/*.js
 ```
 
-This will create a `.po` file for each non-default locale in a directory called `./locales` (pass `--target` if you want to change this).
+This will extract the strings from all matching files and print a `.po` file to stdout. Use the standard `gettext` tools like `msgmerge` and `msgcat` to combine the output with existing `.po` files.
 
 Refer to `extract-strings --help` for a full list of options
+
+#### Why not just use `xgettext`
+
+While `xgettext` works perfectly fine on ES5 code, it will choke on ES6+ syntax and also does not support parsing JSX, which `l10nify` supports.
 
 ### Apply the transform at bundle time
 

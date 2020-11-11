@@ -5,21 +5,14 @@
  * SPDX-License-Identifier: MIT
  */
 
-var path = require('path')
 var arg = require('arg')
 
 var extractStrings = require('./../extract.js')
 
 var args = arg({
   '--help': Boolean,
-  '--default-locale': String,
-  '--locale': [String],
-  '--target': String,
   '--global': String,
   '-h': '--help',
-  '-d': '--default-locale',
-  '-l': '--locale',
-  '-t': '--target',
   '-g': '--global'
 })
 
@@ -30,12 +23,6 @@ files defines the files to extract strings from. Usually this will
 be a glob pattern like "**/*.js" or similar.
 
 Options:
-  -l, --locale [LOCALE]         Specify the locales to extract. Pass multiple
-                                locales by passing multiple flags.
-  -d, --default-locale [LOCALE] Specify the default locale that is used in code.
-                                Defaults to "en".
-  -t, --target [DIRECTORY]      Specify the target directory for saving .po
-                                files. Defaults to "./locales".
   -g, --global [IDENTIFIER]     Specify the global identifier used as l10n
                                 function in code, Defaults to "__"
   -h, --help                    Display this help message.
@@ -44,35 +31,21 @@ Options:
 }
 
 args = Object.assign({
-  '--default-locale': 'en',
-  '--locale': [],
-  '--target': './locales/',
   '--global': '__'
 }, args)
 
-var eligible = args['--locale']
-  .filter(function (locale) {
-    return locale !== args['--default-locale']
-  })
+var stream = extractStrings(args._, args['--global'])
 
-if (eligible.length === 0) {
-  console.log('No non-default locales were configured. Nothing to do.')
-  console.log('If this is unintended, check the locales passed to this task.')
+stream.on('data', function (line) {
+  process.stdout.write(line)
+})
+
+stream.on('error', function (err) {
+  console.error('Error extracting strings: %s', err.message)
+  console.error(err)
+  process.exit(1)
+})
+
+stream.on('end', function () {
   process.exit(0)
-}
-
-Promise.all(eligible.map(function (locale) {
-  return extractStrings(
-    path.join(process.cwd(), args['--target'], locale + '.po'),
-    args._,
-    args['--global']
-  )
-}))
-  .then(() => {
-    console.log('Successfully extracted %d locales.', eligible.length)
-  })
-  .catch(function (err) {
-    console.error('Error extracting strings: %s', err.message)
-    console.error(err)
-    process.exit(1)
-  })
+})
