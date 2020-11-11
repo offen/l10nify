@@ -1,5 +1,10 @@
 # Changes
 
+## 0.2.0
+
+- [`969aeba`](https://github.com/offen/l10nify/commit/969aeba74af91c3d4c3fe39908240b251ae5fc6c)
+  delegate merging of extracted strings to gettext tools
+
 ## 0.1.3
 
 - [`b7572f9`](https://github.com/offen/l10nify/commit/b7572f989781d4c73d02e2e7d66bf9f33504bdd0)
