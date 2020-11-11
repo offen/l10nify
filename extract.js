@@ -4,58 +4,21 @@
  */
 
 var fs = require('fs')
-var util = require('util')
 var jscodeshift = require('jscodeshift')
-var touch = require('touch')
 var PO = require('pofile')
+var events = require('events')
 
 module.exports = extractStrings
 
-function extractStrings (destination, files, globalFunctionIdentifier) {
+function extractStrings (files, globalFunctionIdentifier) {
   if (!files || !files.length) {
-    console.log('No files found using given pattern, exiting')
-    return null
+    throw new Error('No files found using given pattern, exiting')
   }
   return parse(files, globalFunctionIdentifier)
-    .then(function (allStrings) {
-      return merge(destination, allStrings)
-    })
-    .then(function () {
-      console.log('Successfully saved strings to %s', destination)
-    })
-}
-
-function merge (file, allStrings) {
-  var currentPo = new PO()
-  currentPo.items = allStrings
-
-  return util.promisify(PO.load)(file)
-    .catch(function (err) {
-      if (err.code === 'ENOENT') {
-        return null
-      }
-      throw err
-    })
-    .then(function (existingPo) {
-      if (existingPo) {
-        currentPo.items = currentPo.items.map(function (item) {
-          var exists = existingPo.items.filter(function (existingItem) {
-            return existingItem.msgid === item.msgid
-          })
-          if (exists.length && exists[0].msgstr.length) {
-            item.msgstr = exists[0].msgstr
-          }
-          return item
-        })
-      }
-      return util.promisify(touch)(file)
-    })
-    .then(function () {
-      return util.promisify(currentPo.save).bind(currentPo)(file)
-    })
 }
 
 function parse (files, globalFunctionIdentifier) {
+  var stream = new events.EventEmitter()
   var all = files
     .filter(function (fileName) {
       return !(/node_modules/.test(fileName))
@@ -86,15 +49,20 @@ function parse (files, globalFunctionIdentifier) {
               item.comments = [
                 fileName + ':' + node.node.loc.start.line
               ]
-              strings.push(item)
+              stream.emit('data', item.toString() + '\n\n')
             }
           })
-          resolve(strings)
+          resolve()
         })
       })
     })
-  return Promise.all(all)
+  Promise.all(all)
     .then(function (results) {
-      return [].concat.apply([], results)
+      stream.emit('end')
     })
+    .catch(function (err) {
+      stream.emit('error', err)
+    })
+
+  return stream
 }
