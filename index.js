@@ -15,6 +15,7 @@ function transform (file, options) {
   var defaultLocale = options.defaultLocale || 'en'
   var globalFunctionIdentifier = options.global || '__'
   var source = options.source || './locales/'
+  var allowHtml = options.allowHtml || false
 
   var buf = ''
   return through(function (chunk, enc, next) {
@@ -22,7 +23,7 @@ function transform (file, options) {
     next()
   }, function (done) {
     var self = this
-    inlineStrings(buf, locale, defaultLocale, source, globalFunctionIdentifier, function (err, result) {
+    inlineStrings(buf, locale, defaultLocale, source, globalFunctionIdentifier, allowHtml, function (err, result) {
       if (err) {
         return done(err)
       }
@@ -32,7 +33,7 @@ function transform (file, options) {
   })
 }
 
-function inlineStrings (sourceString, locale, defaultLocale, source, globalFunctionIdentifier, callback) {
+function inlineStrings (sourceString, locale, defaultLocale, source, globalFunctionIdentifier, allowHtml, callback) {
   getStringMap(locale, defaultLocale, source, function (err, stringMap) {
     if (err) {
       return callback(err)
@@ -63,6 +64,21 @@ function inlineStrings (sourceString, locale, defaultLocale, source, globalFunct
       // more than one argument means we want to do string interpolation
       var args = node.value.arguments.slice(1)
 
+      var escapedArgs = args.map(function (arg) {
+        if (allowHtml) {
+          return arg
+        }
+        return jscodeshift.callExpression(
+          jscodeshift.callExpression(
+            jscodeshift.identifier('require'),
+            [
+              jscodeshift.stringLiteral('escape-html')
+            ]
+          ),
+          [arg]
+        )
+      })
+
       return jscodeshift.callExpression(
         jscodeshift.memberExpression(
           jscodeshift.callExpression(
@@ -73,7 +89,7 @@ function inlineStrings (sourceString, locale, defaultLocale, source, globalFunct
           ),
           jscodeshift.identifier('format')
         ),
-        [jscodeshift.stringLiteral(formatStr)].concat(args)
+        [jscodeshift.stringLiteral(formatStr)].concat(escapedArgs)
       )
     })
     callback(null, j.toSource())

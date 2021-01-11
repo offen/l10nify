@@ -80,6 +80,10 @@ The following options can be passed to the transform:
 
 `source` specifies the directory in which the `<LOCALE>.po` files are stored. It defaults to `./locales`
 
+##### `allowHtml`
+
+By default, all strings passed as arguments (e.g. `__('Happy birthday %s', 'Guillermo')`) are HTML-escaped in order to prevent XSS-style attacks. If you can make sure you never pass user created content, you can disable this behavior by passing `allowHtml: true`.
+
 ##### `global`
 
 `global` defines the global function identifier that is used for defining strings in code. It defaults to `__`.

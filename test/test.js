@@ -20,6 +20,40 @@ tape.test('returns the default language when no options are passed', function (t
   })
 })
 
+tape.test('escapes HTML in format arguments', function (t) {
+  bundle('html.js', null, function (err, src) {
+    if (err) {
+      t.fail(err)
+    }
+
+    vm.runInNewContext(src, {
+      console: { log: log }
+    })
+
+    function log (value) {
+      t.equal(value, 'Hello &lt;i&gt;world&lt;/i&gt;!', 'passes')
+      t.end()
+    }
+  })
+})
+
+tape.test('does not escape HTML in format arguments if explicitly allowed', function (t) {
+  bundle('html.js', { allowHtml: true }, function (err, src) {
+    if (err) {
+      t.fail(err)
+    }
+
+    vm.runInNewContext(src, {
+      console: { log: log }
+    })
+
+    function log (value) {
+      t.equal(value, 'Hello <i>world</i>!', 'passes')
+      t.end()
+    }
+  })
+})
+
 tape.test('returns the given language', function (t) {
   bundle('log.js', { locale: 'de', source: './test/locales' }, function (err, src) {
     if (err) {
