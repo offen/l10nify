@@ -11,10 +11,10 @@ var PO = require('pofile')
 module.exports = transform
 
 function transform (file, options) {
-  var locale = options.locale || 'en'
-  var defaultLocale = options.defaultLocale || 'en'
-  var globalFunctionIdentifier = options.global || '__'
-  var source = options.source || './locales/'
+  var locale = options.locale || process.env.LOCALE || 'en'
+  var defaultLocale = options.defaultLocale || process.env.DEFAULT_LOCALE || 'en'
+  var globalFunctionIdentifier = options.global || process.env.GLOBAL || '__'
+  var source = options.source || process.env.SOURCE || './locales/'
 
   var buf = ''
   return through(function (chunk, enc, next) {

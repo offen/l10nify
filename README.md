@@ -70,19 +70,19 @@ The following options can be passed to the transform:
 
 ##### `locale`
 
-`locale` specifies the locale which you want to return when bundling. It defaults to `en`.
+`locale` specifies the locale which you want to return when bundling. It defaults to `en` or `process.env.LOCALE` when set.
 
 ##### `defaultLocale`
 
-`defaultLocale` specifies the default locale that is used to define strings in code. It defaults to `en`.
+`defaultLocale` specifies the default locale that is used to define strings in code. It defaults to `en` or `process.env.DEFAULT_LOCALE` when set.
 
 ##### `source`
 
-`source` specifies the directory in which the `<LOCALE>.po` files are stored. It defaults to `./locales`
+`source` specifies the directory in which the `<LOCALE>.po` files are stored. It defaults to `./locales` or `process.env.SOURCE` when set.
 
 ##### `global`
 
-`global` defines the global function identifier that is used for defining strings in code. It defaults to `__`.
+`global` defines the global function identifier that is used for defining strings in code. It defaults to `__` or `process.env.GLOBAL` when set.
 
 ## License
 
