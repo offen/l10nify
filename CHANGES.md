@@ -1,5 +1,10 @@
 # Changes
 
+## 0.3.0
+
+- [`e07fd8c`](https://github.com/offen/l10nify/commit/e07fd8ce6c4bff7fe55e072694d32799eed1811d)
+  allow specifying transform options in environment variables
+
 ## 0.2.0
 
 - [`969aeba`](https://github.com/offen/l10nify/commit/969aeba74af91c3d4c3fe39908240b251ae5fc6c)
