@@ -1,5 +1,12 @@
 # Changes
 
+## 0.4.0
+
+- [`a036428`](https://github.com/offen/l10nify/commit/a036428e59b7f5cd87a75fc956246997ea3c6e34)
+  Update jscodeshift so transient dependency on `colors` is removed
+- [`47c37be`](https://github.com/offen/l10nify/commit/47c37bec5efff493d1bec270cf949676f17fc54d)
+  Update README.md (Hendrik Niefeld)
+
 ## 0.3.0
 
 - [`e07fd8c`](https://github.com/offen/l10nify/commit/e07fd8ce6c4bff7fe55e072694d32799eed1811d)
